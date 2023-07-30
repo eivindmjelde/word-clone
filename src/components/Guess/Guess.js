@@ -1,11 +1,19 @@
 import React from "react";
+import { checkGuess } from "../../game-helpers";
 
-function Guess({ value }) {
-  const renderedLetters = value?.length > 0 ? [...value] : Array(5).fill("");
+function Guess({ value, answer }) {
+  const checkedLetters =
+    value && value.length > 0
+      ? checkGuess(value, answer)
+      : Array(5).fill({
+          letter: "",
+          status: "",
+        });
+
   return (
     <p className="guess">
-      {renderedLetters.map((letter, i) => (
-        <span className="cell" key={i}>
+      {checkedLetters.map(({ letter, status }, i) => (
+        <span className={`cell ${status}`} key={i}>
           {letter}
         </span>
       ))}
