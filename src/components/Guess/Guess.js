@@ -5,7 +5,8 @@ function Guess({ value, answer }) {
   const checkedLetters =
     value && value.length > 0
       ? checkGuess(value, answer)
-      : Array(5).fill({
+      : // Fallback for undefined value👇
+        Array(5).fill({
           letter: "",
           status: "",
         });

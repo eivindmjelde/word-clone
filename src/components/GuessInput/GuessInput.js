@@ -1,6 +1,6 @@
 import React from "react";
 
-function WordInput({ handleAddToGuesses }) {
+function WordInput({ handleAddToGuesses, setIsGameFinished, disabled }) {
   const [guess, setGuess] = React.useState("");
 
   function handleGuessChange(event) {
@@ -20,6 +20,7 @@ function WordInput({ handleAddToGuesses }) {
       <input
         id="guess-input"
         type="text"
+        disabled={disabled}
         title="Please enter 5 letters from a to z"
         value={guess}
         onChange={handleGuessChange}

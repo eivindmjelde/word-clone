@@ -5,6 +5,7 @@ import { sample } from "../../utils";
 import { WORDS } from "../../data";
 import GuessInput from "../GuessInput";
 import GuessResults from "../GuessResults";
+import GameResult from "../GameResult";
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -13,26 +14,34 @@ console.info({ answer });
 
 function Game() {
   const [guesses, setGuesses] = useState([]);
+  // running | lost | won
+  const [gameStatus, setGameStatus] = useState("running");
 
   function handleAddToGuesses(guess) {
-    if (guesses.length >= NUM_OF_GUESSES_ALLOWED) {
-      alert("Max number of guesses reached");
-      return;
-    }
-
-    setGuesses([
+    const nextGuesses = [
       ...guesses,
       {
         value: guess,
         id: crypto.randomUUID(),
       },
-    ]);
+    ];
+    setGuesses(nextGuesses);
+
+    if (guess === answer) {
+      setGameStatus("won");
+    } else if (nextGuesses.length >= NUM_OF_GUESSES_ALLOWED) {
+      setGameStatus("lost");
+    }
   }
 
   return (
     <>
       <GuessResults guesses={guesses} answer={answer} />
-      <GuessInput handleAddToGuesses={handleAddToGuesses} />
+      <GuessInput
+        handleAddToGuesses={handleAddToGuesses}
+        disabled={gameStatus !== "running"}
+      />
+      <GameResult guesses={guesses} answer={answer} gameStatus={gameStatus} />
     </>
   );
 }
